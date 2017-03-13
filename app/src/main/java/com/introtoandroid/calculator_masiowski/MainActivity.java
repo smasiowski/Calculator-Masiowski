@@ -13,12 +13,15 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
 
 
-
-
     int value = 0;
     int num = 0;
+    int current = 0;
+    int previous;
+    boolean hasprev = false;
+
     String txt = "";
     String expression = "";
+    String operation = "null";
 
     TextView output;
 
@@ -146,51 +149,90 @@ public class MainActivity extends AppCompatActivity {
 
         // MATH BUTTONS----------------------------------------------------------------------------
 
-        if (view == add){
-            value = value + num;
-            output.setText(Integer.toString(value));
+        else if (view == add){
+            num = Integer.parseInt(txt);
+            txt = "";
+
+            calculate();
+
+            previous=num;
+            operation="add";
+            txt = "";
         }
+
         else if (view == subtract) {
-            expression += txt;
-            expression += "-";
+
+            num = Integer.parseInt(txt);
             txt = "";
 
+           calculate();
 
+            previous=num;
+            operation="subtract";
+            txt = "";
 
-
-            /*
-            value = value - num;
-            output.setText(Integer.toString(value));*/
         } else if (view == multiply) {
-            expression += txt;
-            expression += "*";
+            num = Integer.parseInt(txt);
             txt = "";
-            //value = value * num;
-            //output.setText(Integer.toString(value));
-        } else if (view == divide) {
-            value = value / num;
-            output.setText(Integer.toString(value));
+
+            calculate();
+
+            previous=num;
+            operation="multiply";
+            txt = "";
         }
-/*
+
+        else if (view == divide) {
+            num = Integer.parseInt(txt);
+            txt = "";
+
+            calculate();
+
+            previous=num;
+            operation="divide";
+            txt = "";
+        }
+
         else if (view == negate) {
-            num = num*(-1);
-            output.setText(Double.toString(value));
+            num = Integer.parseInt(txt);
+            txt = "";
+            int x = -1;
+
+            value = num * x;
+            //   System.out.println();
+            output.setText(Integer.toString(value));
+
+            System.out.println("VALUE: " + value);
+
+            txt = (Integer.toString(value));
+            num = value;
+
+
         }
-*/
+
 
         // OPERATIONS---------------------------------------------------------------------------
 
         else if (view == clear) {
-            num = 0;
-            output.setText(Integer.toString(value));
-        } else if (view == clearAll) {
+
+            txt = "";
+            output.setText(txt);
+
+        }
+        else if (view == clearAll) {
+            txt = "";
             value = 0;
-            output.setText(Integer.toString(value));
+            num = 0;
+            previous = 0;
+            operation = "null";
+            output.setText(txt);
         }
 
         else if (view == equals) {
-            expression = "12*2+5/2-1";
-            calculate(expression);
+            calculate();
+            operation = "null";
+            previous=num;
+
         }
 
     }
@@ -198,42 +240,92 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void add(View view) {
-         if (view == add){
-            value = value + num;
-            output.setText(Integer.toString(value));
-        }
 
-    }
+    // CALCULATE---------------------------------------------------------------------------
+    public void calculate(){
+
+        System.out.println("NUM: " + num);
+        System.out.println("PREVIOUS: " + previous);
 
 
-    public void calculate(String equation){
+        if(operation == "subtract"){
 
-        String[] parts = equation.split("(?<=[-+*/])|(?=[-+*/])");
-        double result = Double.parseDouble(parts[0]);
+                value = previous - num;
+             //   System.out.println();
+                output.setText(Integer.toString(value));
 
-        for (int i = 1; i < parts.length; i += 2) {
-            String op = parts[i];
-            double val = Double.parseDouble(parts[i+1]);
-            switch (op) {
-                case "*" :
-                    result *= val;
-                    break;
-                case "/" :
-                    result /= val;
-                    break;
-                case "-" :
-                    result -= val;
-                    break;
-                case "+" :
-                    result += val;
+                System.out.println("VALUE: " + value);
+
+                txt = (Integer.toString(value));
+                num = value;
+
+
             }
+
+        if(operation == "add"){
+
+            value = previous + num;
+            //   System.out.println();
+            output.setText(Integer.toString(value));
+
+            System.out.println("VALUE: " + value);
+
+            txt = (Integer.toString(value));
+            num = value;
+
+
         }
-        output.setText(Double.toString(result));
+        if(operation == "multiply"){
+
+            value = previous * num;
+
+            output.setText(Integer.toString(value));
+
+            System.out.println("VALUE: " + value);
+
+            txt = (Integer.toString(value));
+            num = value;
+
+        }
+        if(operation == "divide"){
+
+            value = previous / num;
+            //   System.out.println();
+            output.setText(Integer.toString(value));
+
+            System.out.println("VALUE: " + value);
+
+            txt = (Integer.toString(value));
+            num = value;
+
+
+        }
+
+
+
+
 
 
     }
 
 
+
+
+
+
+
+
+    @Override
+    protected void onSaveInstanceState( Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putCharSequence("view", output.getText());
+
     }
 
+    @Override
+    protected void onRestoreInstanceState( Bundle savedInstanceState){
+        //TODO see onSave
+        super.onSaveInstanceState(savedInstanceState);
+        output.setText(savedInstanceState.getCharSequence("view"));
+    }
+}
