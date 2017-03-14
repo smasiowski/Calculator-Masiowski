@@ -15,12 +15,9 @@ public class MainActivity extends AppCompatActivity {
 
     int value = 0;
     int num = 0;
-    int current = 0;
     int previous;
-    boolean hasprev = false;
 
     String txt = "";
-    String expression = "";
     String operation = "null";
 
     TextView output;
@@ -88,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // ONCLICK-----------------------------------------------------------------
+    // ONCLICK--------------------------------------------------------------------------------------
     public void onClick(View view) {
 
 
@@ -147,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        // MATH BUTTONS----------------------------------------------------------------------------
+        // MATH BUTTONS-----------------------------------------------------------------------------
 
         else if (view == add){
             num = Integer.parseInt(txt);
@@ -211,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        // OPERATIONS---------------------------------------------------------------------------
+        // OPERATIONS-------------------------------------------------------------------------------
 
         else if (view == clear) {
 
@@ -240,8 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-    // CALCULATE---------------------------------------------------------------------------
+    // CALCULATE------------------------------------------------------------------------------------
     public void calculate(){
 
         System.out.println("NUM: " + num);
@@ -301,19 +297,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
-
-
-
-
     }
 
-
-
-
-
-
-
+    //SAVE STATE------------------------------------------------------------------------------------
 
     @Override
     protected void onSaveInstanceState( Bundle savedInstanceState){
@@ -324,8 +310,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onRestoreInstanceState( Bundle savedInstanceState){
-        //TODO see onSave
         super.onSaveInstanceState(savedInstanceState);
         output.setText(savedInstanceState.getCharSequence("view"));
     }
+
+
 }
